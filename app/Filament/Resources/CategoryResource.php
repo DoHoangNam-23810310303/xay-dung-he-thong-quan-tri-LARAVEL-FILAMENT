@@ -37,7 +37,7 @@ class CategoryResource extends Resource
                 Forms\Components\Textarea::make('description')
                     ->columnSpanFull(),
                 Forms\Components\Toggle::make('is_visible')
-                    ->label('Hi?n th?')
+                    ->label('Visible')
                     ->default(true)
                     ->required(),
             ]);
@@ -52,7 +52,7 @@ class CategoryResource extends Resource
                 Tables\Columns\TextColumn::make('slug')
                     ->searchable(),
                 Tables\Columns\IconColumn::make('is_visible')
-                    ->label('Hi?n th?')
+                    ->label('Visible')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -65,10 +65,10 @@ class CategoryResource extends Resource
             ])
             ->filters([
                 TernaryFilter::make('is_visible')
-                    ->label('Tr?ng thái hi?n th?')
+                    ->label('Visibility status')
                     ->boolean()
-                    ->trueLabel('Ðang hi?n th?')
-                    ->falseLabel('Ðang ?n')
+                    ->trueLabel('Visible')
+                    ->falseLabel('Hidden')
                     ->native(false),
             ])
             ->actions([

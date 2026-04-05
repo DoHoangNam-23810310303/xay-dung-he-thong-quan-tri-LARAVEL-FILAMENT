@@ -30,7 +30,7 @@ class ProductResource extends Resource
                 Forms\Components\Grid::make(2)
                     ->schema([
                         Forms\Components\Select::make('category_id')
-                            ->label('Danh m?c')
+                            ->label('Category')
                             ->relationship('category', 'name', fn ($query) => $query->orderBy('name'))
                             ->searchable()
                             ->preload()
@@ -52,45 +52,45 @@ class ProductResource extends Resource
                             ->maxLength(255)
                             ->unique(ignoreRecord: true),
                         Forms\Components\TextInput::make('price')
-                            ->label('Giá')
+                            ->label('Price')
                             ->required()
                             ->numeric()
                             ->minValue(0)
-                            ->prefix('VNÐ'),
+                            ->prefix('VND'),
                         Forms\Components\TextInput::make('stock_quantity')
-                            ->label('S? lý?ng t?n kho')
+                            ->label('Stock quantity')
                             ->required()
                             ->integer()
                             ->minValue(0)
                             ->default(0),
                         Forms\Components\TextInput::make('discount_percent')
-                            ->label('Gi?m giá (%)')
+                            ->label('Discount (%)')
                             ->required()
                             ->integer()
                             ->minValue(0)
                             ->maxValue(90)
                             ->default(0)
                             ->suffix('%')
-                            ->helperText('Trý?ng sáng t?o: gi?m giá t?i ða 90%.'),
+                            ->helperText('Creative field: maximum discount is 90%.'),
                         Forms\Components\Placeholder::make('discounted_preview')
-                            ->label('Giá sau gi?m (xem trý?c)')
+                            ->label('Discounted price preview')
                             ->content(function (Get $get): string {
                                 $price = (float) ($get('price') ?? 0);
                                 $discount = (int) ($get('discount_percent') ?? 0);
                                 $discount = max(0, min(90, $discount));
                                 $final = $price - ($price * $discount / 100);
 
-                                return number_format($final, 0, ',', '.') . ' VNÐ';
+                                return number_format($final, 0, ',', '.') . ' VND';
                             }),
                         Forms\Components\FileUpload::make('image_path')
-                            ->label('?nh ð?i di?n')
+                            ->label('Cover image')
                             ->image()
                             ->disk('public')
                             ->directory('products')
                             ->maxFiles(1)
                             ->columnSpanFull(),
                         Forms\Components\RichEditor::make('description')
-                            ->label('Mô t?')
+                            ->label('Description')
                             ->columnSpanFull(),
                     ]),
             ]);
@@ -101,25 +101,25 @@ class ProductResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('image_path')
-                    ->label('?nh'),
+                    ->label('Image'),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('category.name')
-                    ->label('Danh m?c')
+                    ->label('Category')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('price')
-                    ->label('Giá')
+                    ->label('Price')
                     ->money('VND', locale: 'vi_VN')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('discount_percent')
-                    ->label('Gi?m giá')
+                    ->label('Discount')
                     ->suffix('%')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('discounted_price')
-                    ->label('Giá sau gi?m')
+                    ->label('Discounted price')
                     ->money('VND', locale: 'vi_VN'),
                 Tables\Columns\TextColumn::make('stock_quantity')
-                    ->label('T?n kho')
+                    ->label('Stock')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
@@ -136,7 +136,7 @@ class ProductResource extends Resource
             ])
             ->filters([
                 SelectFilter::make('category_id')
-                    ->label('Danh m?c')
+                    ->label('Category')
                     ->options(Category::query()->pluck('name', 'id')->all())
                     ->searchable(),
             ])
